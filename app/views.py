@@ -4,9 +4,11 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
+import os
 from app import app
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for, flash, session, abort
+from werkzeug.utils import secure_filename 
+from app.forms import UploadForm
 
 ###
 # Routing for your application.
@@ -68,6 +70,24 @@ def add_header(response):
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
 
+@app.route("/api/upload",methods=['POST']) 
+def upload():
+    form=UploadForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        Description=request.form['Description']
+        Photo=request.Photo.data 
+        filename=secure_filename(Photo.filename)
+        Photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        return ({"message": "File Upload Successful",
+                 "filename":filename,
+                  "Description":Description 
+        }) 
+    
+    errors=form_errors(form) 
+    return ({
+        "errors":errors
+    })
+        
 
 @app.errorhandler(404)
 def page_not_found(error):

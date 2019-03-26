@@ -49,7 +49,22 @@ const NotFound = Vue.component('not-found', {
     data: function () {
         return {}
     }
-})
+}) 
+const upload = Vue.component('/api/upload',{
+    
+    template:`
+    <h1>Add Photo<h1>
+    <form action={{ url_for('upload') }} method="POST" enctype = "multipart/form-data"> 
+    {{forms.hidden_tag()}}
+    
+    {{forms.Description.label}}
+    {{forms.Description(class='form-control')}} 
+    {{forms.Photo.label}}
+    {{forms.Photo(class='form-control')}} 
+    
+    {{form.csrf_token}}
+    `
+});
 
 // Define Routes
 const router = new VueRouter({
