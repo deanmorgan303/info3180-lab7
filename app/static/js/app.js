@@ -90,7 +90,8 @@ const upload_form = Vue.component('upload',{
             })
             .then(function (jsonResponse) {
                 // display a success message
-                console.log(jsonResponse);
+                information=jsonResponse
+                console.log(information); 
                 
             })
             .catch(function (error) {
